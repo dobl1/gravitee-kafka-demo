@@ -36,3 +36,29 @@
     transform: rotate(360deg);
   }
 }
+
+/*div {
+  border: 1px solid red;
+}*/
+div.wrapper {
+   display: -webkit-box -moz-box; 
+   padding-top: 200px;
+}
+
+div.container {
+  display: flex;  /* <---------- required */
+  border: 1px red;
+}
+
+div.child {
+  flex: 1;  /* <---------------- required */
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+}
+
+.field {
+  padding-top: 10px;
+}

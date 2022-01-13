@@ -1,0 +1,53 @@
+asyncapi: '2.1.0'
+info:
+  title: Kafka Test
+  version: 1.0.0
+  description: Example of how to expose Kafka topics via rest
+channels:
+  transactions:
+    subscribe:
+      message:
+        $ref: '#/components/messages/transaction'
+  anomalies:
+    subscribe:
+      message:
+        $ref: '#/components/messages/anomaly'
+components:
+  messages:
+    transaction:
+      payload:
+        type: object
+        properties:
+          CARD_NUMBER:
+            type: number
+            description: The customer's credit card number
+          EMAIL_ADDRESS:
+            type: string
+            format: email
+            description: Email of the user
+          TIMESTAMP:
+            type: string
+            description: Timestamp when the transaction happened
+          AMOUNT:
+            type: number
+            description: Transaction's amount
+    anomaly:
+      payload:
+        type: object
+        properties:
+          card_number:
+            type: number
+            description: The customer's credit card number
+          email_adddress:
+            type: string
+            format: email
+            description: Email of the user
+          n_attempts:
+            type: number
+            description: Number of attempts to use the card which caused the anomaly to be detected
+          total_amount:
+            type: number
+            description: Total amount involved in the fraud
+          t_ids:
+            type: array
+            description: List of Transaction IDs that caused the anomaly
