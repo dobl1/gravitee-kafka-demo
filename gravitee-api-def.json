@@ -1,0 +1,225 @@
+{
+  "name": "Credit Card Anomalies Detection",
+  "version": "1.0.0",
+  "description": "Test kafka connector",
+  "visibility": "PRIVATE",
+  "gravitee": "2.0.0",
+  "flow_mode": "DEFAULT",
+  "resources": [],
+  "properties": [],
+  "labels": [
+    "ciccio"
+  ],
+  "members": [
+    {
+      "source": "cockpit",
+      "sourceId": "63aa9dfe-b2ac-4db6-aa9d-feb2ac6db69a",
+      "roles": [
+        "6a510b2c-c152-4fbc-910b-2cc1521fbc08"
+      ]
+    },
+    {
+      "source": "memory",
+      "sourceId": "admin",
+      "roles": [
+        "292bc14f-45ec-441c-abc1-4f45ec341c30"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "id": "fbc1c2ed-dcf2-4318-81c2-eddcf283183a",
+      "name": "Aside",
+      "type": "SYSTEM_FOLDER",
+      "order": 0,
+      "published": true,
+      "visibility": "PUBLIC",
+      "lastModificationDate": 1638747115968,
+      "contentType": "application/json",
+      "homepage": false,
+      "parentPath": "",
+      "excludedAccessControls": false,
+      "accessControls": [],
+      "api": "615b1ad4-3efb-4a96-9b1a-d43efb0a965f"
+    },
+    {
+      "id": "a7c1731b-2d4e-41f9-8173-1b2d4ef1f93e",
+      "name": "asyncapi.yaml",
+      "type": "ASYNCAPI",
+      "content": "asyncapi: '2.1.0'\ninfo:\n  title: Kafka Test\n  version: 1.0.0\n  description: Example of how to expose Kafka topics via rest\nservers:\n  production:\n    url: \"nico.gravitee.io/apim/gateway-dev/ws/kafka\"\n    protocol: ws\n    description: This is \"Nico's\" broker.\n    security:\n      - apiKey: []\nchannels:\n  transactions:\n    subscribe:\n      message:\n        $ref: '#/components/messages/transaction'\n  anomalies:\n    subscribe:\n      message:\n        $ref: '#/components/messages/anomaly'\ncomponents:\n  messages:\n    transaction:\n      payload:\n        type: object\n        properties:\n          CARD_NUMBER:\n            type: number\n            description: The customer's credit card number\n            example: 234332424\n          EMAIL_ADDRESS:\n            type: string\n            format: email\n            description: Email of the user\n            example: nico.balestra@graviteesource.com\n          TIMESTAMP:\n            type: string\n            description: Timestamp when the transaction happened\n            example: 2022-01-21T12:30.00\n          AMOUNT:\n            type: number\n            description: Transaction's amount\n            example: 100.00\n    anomaly:\n      payload:\n        type: object\n        properties:\n          card_number:\n            type: number\n            description: The customer's credit card number\n          email_adddress:\n            type: string\n            format: email\n            description: Email of the user\n          n_attempts:\n            type: number\n            description: Number of attempts to use the card which caused the anomaly to be detected\n          total_amount:\n            type: number\n            description: Total amount involved in the fraud\n          t_ids:\n            type: array\n            description: List of Transaction IDs that caused the anomaly\n  securitySchemes:\n    apiKey:\n      type: httpApiKey      \n      in: query\n      name: \"api-key\"\n        \n\n\n",
+      "order": 1,
+      "lastContributor": "508d570e-e5da-4b22-8d57-0ee5da4b220f",
+      "published": true,
+      "visibility": "PUBLIC",
+      "lastModificationDate": 1642512176541,
+      "contentType": "text/yaml",
+      "homepage": true,
+      "parentPath": "",
+      "excludedAccessControls": false,
+      "accessControls": [],
+      "api": "615b1ad4-3efb-4a96-9b1a-d43efb0a965f",
+      "attached_media": []
+    }
+  ],
+  "plans": [
+    {
+      "id": "00602840-6ea0-4acc-a028-406ea04acc86",
+      "name": "API Key plan",
+      "description": "API Key Plan",
+      "validation": "MANUAL",
+      "security": "API_KEY",
+      "securityDefinition": "{\"propagateApiKey\":true}",
+      "type": "API",
+      "status": "PUBLISHED",
+      "api": "615b1ad4-3efb-4a96-9b1a-d43efb0a965f",
+      "order": 1,
+      "characteristics": [],
+      "created_at": 1639135848583,
+      "updated_at": 1639135852520,
+      "published_at": 1639135852520,
+      "paths": {},
+      "flows": [
+        {
+          "name": "",
+          "path-operator": {
+            "path": "/",
+            "operator": "STARTS_WITH"
+          },
+          "condition": "",
+          "consumers": [],
+          "methods": [],
+          "pre": [],
+          "post": [],
+          "enabled": true
+        }
+      ],
+      "comment_required": false
+    }
+  ],
+  "metadata": [
+    {
+      "key": "email-support",
+      "name": "email-support",
+      "format": "MAIL",
+      "value": "${(api.primaryOwner.email)!''}",
+      "defaultValue": "support@change.me",
+      "apiId": "615b1ad4-3efb-4a96-9b1a-d43efb0a965f"
+    }
+  ],
+  "id": "615b1ad4-3efb-4a96-9b1a-d43efb0a965f",
+  "path_mappings": [],
+  "proxy": {
+    "virtual_hosts": [
+      {
+        "path": "/kafka"
+      }
+    ],
+    "strip_context_path": false,
+    "preserve_host": false,
+    "groups": [
+      {
+        "name": "default-group",
+        "endpoints": [
+          {
+            "backup": false,
+            "common": {
+              "clientDnsLookup": "USE_ALL_DNS_IPS"
+            },
+            "inherit": false,
+            "name": "default",
+            "weight": 1,
+            "producer": {
+              "retryBackoffMs": 100,
+              "metadataMaxAgeMs": 30000,
+              "partitionerClass": "org.apache.kafka.clients.producer.internals.DefaultPartitioner",
+              "reconnectBackoffMs": 50,
+              "metricsSampleWindowMs": 30000,
+              "transactionalId": "",
+              "compressionType": "none",
+              "receiveBufferBytes": 32768,
+              "metricsRecordingLevel": "INFO",
+              "metadataMaxIdleMs": 300000,
+              "keySerializer": "org.apache.kafka.common.serialization.StringSerializer",
+              "reconnectBackoffMaxMs": 1000,
+              "lingerMs": 0,
+              "securityProtocol": "PLAINTEXT",
+              "sendBufferBytes": 131072,
+              "connectionsMaxIdleMs": 540000,
+              "metricsNumSamples": 2,
+              "clientId": "",
+              "maxRequestSize": 1048576,
+              "maxInFlightRequestsPerConnection": 5,
+              "acks": "1",
+              "valueSerializer": "org.apache.kafka.common.serialization.StringSerializer",
+              "enableIdempotence": false,
+              "deliveryTimeoutMs": 120000,
+              "retries": 2147483647,
+              "bufferMemory": 33554432,
+              "requestTimeoutMs": 30000,
+              "transactionTimeoutMs": 60000,
+              "batchSize": 16384,
+              "maxBlockMs": 60000
+            },
+            "type": "kafka",
+            "consumer": {
+              "fetchMaxWaitMs": 500,
+              "retryBackoffMs": 100,
+              "metadataMaxAgeMs": 300000,
+              "maxPollIntervalMs": 300000,
+              "reconnectBackoffMs": 50,
+              "metricsSampleWindowMs": 30000,
+              "receiveBufferBytes": 65536,
+              "fetchMinBytes": 1,
+              "metricsRecordingLevel": "INFO",
+              "allowAutoCreateTopics": true,
+              "reconnectBackoffMaxMs": 1000,
+              "valueDeserializer": "org.apache.kafka.common.serialization.StringDeserializer",
+              "maxPartitionFetchBytes": 1048576,
+              "securityProtocol": "PLAINTEXT",
+              "autoCommitIntervalMs": 5000,
+              "sessionTimeoutMs": 10000,
+              "sendBufferBytes": 131072,
+              "defaultApiTimeoutMs": 60000,
+              "heartbeatIntervalMs": 3000,
+              "checkCRCS": true,
+              "connectionsMaxIdleMs": 1000000,
+              "metricsNumSamples": 2,
+              "clientId": "",
+              "autoOffsetReset": "latest",
+              "requestTimeoutMs": 30000,
+              "excludeInternalTopics": true,
+              "clientRack": "",
+              "enableAutoCommit": true,
+              "fetchMaxBytes": 52428800,
+              "maxPollRecords": 500,
+              "isolationLevel": "READ_UNCOMMITTED",
+              "keyDeserializer": "org.apache.kafka.common.serialization.StringDeserializer",
+              "partitionAssignmentStrategy": "org.apache.kafka.clients.consumer.RangeAssignor"
+            },
+            "target": "kafka:9092"
+          }
+        ],
+        "load_balancing": {
+          "type": "ROUND_ROBIN"
+        },
+        "http": {
+          "connectTimeout": 5000,
+          "idleTimeout": 60000,
+          "keepAlive": true,
+          "readTimeout": 10000,
+          "pipelining": false,
+          "maxConcurrentConnections": 100,
+          "useCompression": true,
+          "followRedirects": false
+        }
+      }
+    ]
+  },
+  "response_templates": {},
+  "primaryOwner": {
+    "id": "1921563f-0fc4-4260-a156-3f0fc48260a0",
+    "email": "team-cockpit+apo@graviteesource.com",
+    "displayName": "John APO",
+    "type": "USER"
+  }
+}

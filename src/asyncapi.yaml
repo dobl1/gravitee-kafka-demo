@@ -3,6 +3,13 @@ info:
   title: Kafka Test
   version: 1.0.0
   description: Example of how to expose Kafka topics via rest
+servers:
+  production:
+    url: "nico.gravitee.io/apim/gateway-dev/ws/kafka"
+    protocol: ws
+    description: This is "Nico's" broker.
+    security:
+      - apiKey: []
 channels:
   transactions:
     subscribe:
@@ -21,16 +28,20 @@ components:
           CARD_NUMBER:
             type: number
             description: The customer's credit card number
+            example: 234332424
           EMAIL_ADDRESS:
             type: string
             format: email
             description: Email of the user
+            example: nico.balestra@graviteesource.com
           TIMESTAMP:
             type: string
             description: Timestamp when the transaction happened
+            example: 2022-01-21T12:30.00
           AMOUNT:
             type: number
             description: Transaction's amount
+            example: 100.00
     anomaly:
       payload:
         type: object
@@ -51,3 +62,8 @@ components:
           t_ids:
             type: array
             description: List of Transaction IDs that caused the anomaly
+  securitySchemes:
+    apiKey:
+      type: httpApiKey      
+      in: query
+      name: "api-key"
