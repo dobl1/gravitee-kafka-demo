@@ -85,15 +85,18 @@ class TransactionForm extends React.Component {
             this.state.amount +
             ");"
 
-            inserts += insert;
+            inserts = insert + "\n" + inserts;
             //Do this so the code editor gets updated
-            this.setState(currState => {
-                return {
-                    statements: insert + "\n" + this.state.statements
-                }
-            })
+            
 
         }
+
+        this.setState(currState => {
+            return {
+                statements: inserts + "\n" + this.state.statements
+            }
+        })
+
         var body = {
             ksql : inserts,
             streamsProperties: {
@@ -219,38 +222,40 @@ class TransactionForm extends React.Component {
                             value={this.state.numberOfTransactions}
                             />
                     </div>
-                    <Grid
-                    container
-                    spacing={0}
-                    direction="column"
-                    justifyContent="center"
-                    >
-                        <ButtonGroup 
-                                disableElevation 
-                                size="large" 
-                                variant="contained" 
-                                aria-label="outlined primary button group">
-                                <Grid item xs={12}>
-                                    
-                                        <Button 
-                                        sx={{m: 1}}
-                                        endIcon={<SendIcon />}
-                                        onClick={() => this.sendTransactions()}
-                                        >
-                                            Send
-                                        </Button>
+                    <div className='child'>
+                        <Grid
+                        container
+                        spacing={0}
+                        direction="column"
+                        justifyContent="center"
+                        >
+                            <ButtonGroup 
+                                    disableElevation 
+                                    size="large" 
+                                    variant="contained" 
+                                    aria-label="outlined primary button group">
+                                    <Grid item xs={12}>
+                                        
+                                            <Button 
+                                            sx={{m: 1}}
+                                            endIcon={<SendIcon />}
+                                            onClick={() => this.sendTransactions()}
+                                            >
+                                                Send
+                                            </Button>
 
-                                        <Button 
-                                        sx={{m: 1}}
-                                        startIcon={<DeleteIcon/>}
-                                        onClick={() => this.clearForm()}
-                                        >
-                                            Clear form
-                                        </Button>
-                                </Grid>   
+                                            <Button 
+                                            sx={{m: 1}}
+                                            startIcon={<DeleteIcon/>}
+                                            onClick={() => this.clearForm()}
+                                            >
+                                                Clear form
+                                            </Button>
+                                    </Grid>   
 
-                        </ButtonGroup>
-                    </Grid>                    
+                            </ButtonGroup>
+                        </Grid>   
+                    </div>                 
                 </div>
                 <div className='child'>
                 <CodeEditor
@@ -263,6 +268,7 @@ class TransactionForm extends React.Component {
                         fontSize: 12,
                         backgroundColor: "#f5f5f5",
                         fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+                        height: "300px"
                     }}
     />
                 </div>            

@@ -26,10 +26,13 @@ function App() {
           direction="column"
 //          alignItems="center"
           justifyContent="center"
+          
           style={{ minHeight: '100vh' }}
         >
 
-          <Grid item xs={3}>
+          <Grid item xs={3}
+                justifyItems="center"
+          >
             <h1 style={{textAlign: 'left'}}>Send Transactions to KSQLDB API</h1>
             <TransactionForm/>
           </Grid>   

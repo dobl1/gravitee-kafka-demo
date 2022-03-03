@@ -23,7 +23,7 @@ CREATE STREAM transactions (
     timestamp_format = 'yyyy-MM-dd''T''HH:mm:ss'
 );
 */
-const transactionsWS = new W3CWebSocket('ws://nico.gravitee.io/apim/gateway-dev/ws/kafka/transactions?api-key=f04da048-1eb8-491f-b653-9bfc1c24fe2c');
+const transactionsWS = new W3CWebSocket('ws://nico.gravitee.io/apim/gateway-dev/ws/kafka/transactions?api-key=14d726c6-6671-4204-811e-bcd98bb01d53');
 
 const StyledGridOverlay = styled(GridOverlay)(({ theme }) => ({
   flexDirection: 'column',
