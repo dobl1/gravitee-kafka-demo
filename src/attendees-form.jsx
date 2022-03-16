@@ -5,8 +5,9 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import Grid from '@mui/material/Grid';
+import { gravitee } from "./gravitee-context";
 
-class AttendeeForm extends React.Component {
+class AttendeesForm extends React.Component {
 
     handleFirstnameChange = (event) => {
         this.setState(currState => {
@@ -44,7 +45,7 @@ class AttendeeForm extends React.Component {
             }
             var bodyStr = JSON.stringify(body);
 
-            fetch("https://dorian-dev-demo-apim-gateway.cloud.gravitee.io/test-kafka/users?api-key=7f5ea948-07b7-4efd-af5d-150b84c5048d", {
+            fetch("https://" + gravitee.gatewayUrl + gravitee.contextPath + "/" + gravitee.topic + "?api-key=" + gravitee.apikey, {
                 method: "POST",
                 mode: "no-cors",
                 body: bodyStr,
@@ -96,8 +97,8 @@ class AttendeeForm extends React.Component {
     render() {
 
         return (
-            <div style={{ height: 400, width: '100%' }}>
-                <div className="container">
+            <div style={{ height: 330, width: '100%' }}>
+                <div className="container2">
                     <div className='child2'>
                         <div className="field">
                             <TextField
@@ -148,4 +149,4 @@ class AttendeeForm extends React.Component {
     }
 }
 
-export default AttendeeForm;
+export default AttendeesForm;

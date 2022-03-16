@@ -50,7 +50,7 @@ div.container {
   justify-items: center;
   border: 1px red;
   padding: 0px 20px 0px 20px;
-  height: 500px;
+  height: 600px;
 }
 
 div.container2 {
@@ -58,7 +58,7 @@ div.container2 {
   justify-items: center;
   border: 1px red;
   padding: 0px 20px 0px 20px;
-  height: 500px;
+  height: 330px;
 }
 
 div.child {
@@ -71,9 +71,13 @@ div.child2 {
   margin: 0 auto;
   position: relative;
   left: 50%;
+  margin-right: 50%;
   transform: translate(-165px, 0px);
 }
 
+p {
+  margin: 0px 0px 0px 10px;
+}
 
 h1 {
   text-align: center;

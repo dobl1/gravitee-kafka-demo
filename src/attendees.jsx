@@ -2,9 +2,11 @@ import React from "react";
 import { GridOverlay, DataGrid } from '@mui/x-data-grid';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import Box from '@mui/material/Box';
+import { TextField } from "@mui/material";
 import { styled } from '@mui/material/styles';
+import { gravitee } from "./gravitee-context";
 
-const attendeesWS = new W3CWebSocket('wss://dorian-dev-demo-apim-gateway.cloud.gravitee.io/test-kafka/users?api-key=7f5ea948-07b7-4efd-af5d-150b84c5048d');
+const attendeesWS = new W3CWebSocket("wss://" + gravitee.gatewayUrl + gravitee.contextPath + "/" + gravitee.topic + "?api-key=" + gravitee.apikey);
 
 const StyledGridOverlay = styled(GridOverlay)(({ theme }) => ({
   flexDirection: 'column',
@@ -29,8 +31,8 @@ const StyledGridOverlay = styled(GridOverlay)(({ theme }) => ({
 function CustomNoRowsOverlay() {
   return (
     <StyledGridOverlay>
-      <Box sx={{ mt: 1 }}>Waiting for attendees..</Box>
-      </StyledGridOverlay>
+      <Box sx={{ mt: 1 }}>Waiting for new attendees..</Box>
+    </StyledGridOverlay>
   );
 }
 
@@ -38,104 +40,88 @@ class Attendees extends React.Component {
   columns = [
     { field: 'key', headerClassName: 'super-app-theme--header', headerName: 'Key', flex: 1, },
     { field: 'firstname', headerClassName: 'super-app-theme--header', headerName: 'Firstname', flex: 1, },
-    { field: 'lastname', headerClassName: 'super-app-theme--header', headerName: 'Lastname', flex: 1,},
-    { field: 'company', headerClassName: 'super-app-theme--header', headerName: 'Company', flex: 1,},
+    { field: 'lastname', headerClassName: 'super-app-theme--header', headerName: 'Lastname', flex: 1, },
+    { field: 'company', headerClassName: 'super-app-theme--header', headerName: 'Company', flex: 1, },
   ];
 
-   componentDidMount() {
-     function attendeesKeepAlive() {
+  componentDidMount() {
+    function attendeesKeepAlive() {
       if (attendeesWS.readyState === W3CWebSocket.OPEN) {
-          console.log("Keeping attendees session alive...");
-          var number = Math.round(Math.random() * 0xFFFFFF);
-          attendeesWS.send(number.toString());
-          setTimeout(attendeesKeepAlive, 5000);
+        console.log("Keeping attendees session alive...");
+        var number = Math.round(Math.random() * 0xFFFFFF);
+        attendeesWS.send(number.toString());
+        setTimeout(attendeesKeepAlive, 5000);
       }
     }
 
-     attendeesWS.onopen = () => {
-       console.log('Connected to attendees topic Websocket...');
-       attendeesKeepAlive();
-     };
+    attendeesWS.onopen = () => {
+      console.log('Connected to attendees topic Websocket...');
+      attendeesKeepAlive();
+    };
 
-     attendeesWS.onmessage = (message) => {
-       try {
-         console.log("New attendees...");
-         console.log("DATA:")
-         console.log(message.data)
-         
-         var data = JSON.parse(message.data);
-         var key = data.metadata.key;
-         var payload = JSON.parse(data.payload);
-         console.log(payload);
+    attendeesWS.onmessage = (message) => {
+      try {
+        console.log("New attendees...");
+        console.log("DATA:")
+        console.log(message.data)
 
-         var attendee = {
-           id: key,
-           key: key,
-           firstname : payload.firstname,
-           lastname: payload.lastname,
-           company: payload.company
-         }
+        var data = JSON.parse(message.data);
+        var key = data.metadata.key;
+        var payload = JSON.parse(data.payload);
+        console.log(payload);
 
-         this.setState(state => {
-          const list = [attendee, ...state.attendees ];
-          
+        var attendee = {
+          id: key,
+          key: key,
+          firstname: payload.firstname,
+          lastname: payload.lastname,
+          company: payload.company
+        }
+
+        this.setState(state => {
+          const list = [attendee, ...state.attendees];
+
           return {
             attendees: list,
           };
         });
 
-       } catch (error) {
-         console.log("Error while parsing message from websocket");
-         console.log(error);
-       }
-     };
-     attendeesWS.onerror = (error) => {
-       console.log(error);
-       console.log("Error while connecting to the websocket: " + error.message + " " + error.name);
-     }
-     attendeesWS.onclose = (event) => {
-       console.log("Websocket closed: " + event.reason);
-     }
-   }
+      } catch (error) {
+        console.log("Error while parsing message from websocket");
+        console.log(error);
+      }
+    };
+    attendeesWS.onerror = (error) => {
+      console.log(error);
+      console.log("Error while connecting to the websocket: " + error.message + " " + error.name);
+    }
+    attendeesWS.onclose = (event) => {
+      console.log("Websocket closed: " + event.reason);
+    }
+  }
 
   constructor() {
     super();
     this.state = {
-        attendees: [
-        ]
+      attendees: []
     }
   }
 
-  
   render() {
     return (
-      <Box
-        sx={{
-          height: 370,
-          width: 1,
-          '& .super-app-theme--header': {
-           backgroundColor: 'rgba(18, 20, 204, 0.75)',
-           color: 'rgba(255,255,255,1)',
-           fontWeight: 'bold'
-          },
-        }}
-      >
-      <div style={{ height: '100%' }}>
-        <div style={{ display: 'flex', height: '100%' }}>
-          <div style={{ flexGrow: 1 }}>
-          <DataGrid 
-            rows={this.state.attendees} 
-            columns={this.columns}  
-            components={{
-              NoRowsOverlay: CustomNoRowsOverlay,
-            }}/>
+      <Box sx={{ height: 370, width: 1, '& .super-app-theme--header': { backgroundColor: 'rgba(18, 20, 204, 0.75)', color: 'rgba(255,255,255,1)', fontWeight: 'bold' }, }} >
+        <h3>Attendees list - Secured WebSocket</h3>
+        <div style={{ height: '100%' }}>
+          <div style={{ display: 'flex', height: '100%' }}>
+            <div style={{ flexGrow: 1 }}>
+              <DataGrid rows={this.state.attendees} columns={this.columns} components={{ NoRowsOverlay: CustomNoRowsOverlay }} />
+            </div>
           </div>
         </div>
-      </div>
       </Box>
     )
-  } 
-  
+  }
+
 }
 
 export default Attendees;
