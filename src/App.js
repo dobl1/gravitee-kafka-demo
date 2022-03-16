@@ -1,44 +1,26 @@
 import './App.css';
 import React from 'react';
-import Transactions from './Transactions';
-import Anomalies from './Anomalies';
-import TransactionForm from './TransactionForm'
+import Attendees from './attendees';
+import AttendeesForm from './attendees-form'
 import Grid from '@mui/material/Grid';
 
 function App() {
   return (
     <div>
-      <div className='container' style={{height: 300}}>
+      <div className='container'>
         <div className='child'>
-          <h1>Realtime Transactions</h1>
-          <Transactions/>
-        </div>
-        <div className='child'>
-          <h1>Detected Frauds</h1>
-          <Anomalies/>
+          <h1>Gravitee.io Workshop for the Apidays Helsinki & North 2022</h1>
+          <h3>Attendees list - Secured WebSocket</h3>
+          <Attendees />
         </div>
       </div>
-      
-      
-        <Grid
-          container
-          spacing={0}
-          direction="column"
-//          alignItems="center"
-          justifyContent="center"
-          
-          style={{ minHeight: '100vh' }}
-        >
 
-          <Grid item xs={3}
-                justifyItems="center"
-          >
-            <h1 style={{textAlign: 'left'}}>Send Transactions to KSQLDB API</h1>
-            <TransactionForm/>
-          </Grid>   
-    
-        </Grid>   
-      
+      <div className='container2'>
+        <div className='child'>
+          <h3>Send your attendees info - Secured POST request</h3>
+          <AttendeesForm />
+        </div>
+      </div>
     </div>
   );
 }

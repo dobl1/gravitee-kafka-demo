@@ -4,26 +4,7 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 
-//DataGrid: https://mui.com/components/data-grid/getting-started/
-//WS Tutorial: https://blog.logrocket.com/websockets-tutorial-how-to-go-real-time-with-node-and-react-8e4693fbf843/
-
-//Create stream using ksql
-/*
-CREATE STREAM transactions (
-    tx_id VARCHAR KEY,
-    email_address VARCHAR,
-    card_number VARCHAR,
-    timestamp VARCHAR,
-    amount DECIMAL(12, 2)
-) WITH (
-    kafka_topic = 'transactions',
-    partitions = 8,
-    value_format = 'json',
-    timestamp = 'timestamp',
-    timestamp_format = 'yyyy-MM-dd''T''HH:mm:ss'
-);
-*/
-const transactionsWS = new W3CWebSocket('ws://nico.gravitee.io/apim/gateway-dev/ws/kafka/transactions?api-key=14d726c6-6671-4204-811e-bcd98bb01d53');
+const attendeesWS = new W3CWebSocket('wss://dorian-dev-demo-apim-gateway.cloud.gravitee.io/test-kafka/users');
 
 const StyledGridOverlay = styled(GridOverlay)(({ theme }) => ({
   flexDirection: 'column',
@@ -48,37 +29,37 @@ const StyledGridOverlay = styled(GridOverlay)(({ theme }) => ({
 function CustomNoRowsOverlay() {
   return (
     <StyledGridOverlay>
-      <Box sx={{ mt: 1 }}>Waiting for transactions..</Box>
+      <Box sx={{ mt: 1 }}>Waiting for attendees..</Box>
       </StyledGridOverlay>
   );
 }
 
-class Transactions extends React.Component {
+class Attendees extends React.Component {
   columns = [
-    { field: 'key', headerClassName: 'super-app-theme--header', headerName: 'Tx-ID', flex: 1, },
-    { field: 'email', headerClassName: 'super-app-theme--header', headerName: 'Email', flex: 1, },
-    { field: 'card', headerClassName: 'super-app-theme--header', headerName: 'Card N.', flex: 1,},
-    { field: 'timestamp', headerClassName: 'super-app-theme--header', headerName: 'Timestamp', flex: 1,},
+    { field: 'key', headerClassName: 'super-app-theme--header', headerName: 'Key', flex: 1, },
+    { field: 'firstname', headerClassName: 'super-app-theme--header', headerName: 'Firstname', flex: 1, },
+    { field: 'lastname', headerClassName: 'super-app-theme--header', headerName: 'Lastname', flex: 1,},
+    { field: 'company', headerClassName: 'super-app-theme--header', headerName: 'Company', flex: 1,},
   ];
 
    componentDidMount() {
-     function transactionsKeepAlive() {
-      if (transactionsWS.readyState === W3CWebSocket.OPEN) {
-          console.log("Keeping Transactions session alive...");
+     function attendeesKeepAlive() {
+      if (attendeesWS.readyState === W3CWebSocket.OPEN) {
+          console.log("Keeping attendees session alive...");
           var number = Math.round(Math.random() * 0xFFFFFF);
-          transactionsWS.send(number.toString());
-          setTimeout(transactionsKeepAlive, 5000);
+          attendeesWS.send(number.toString());
+          setTimeout(attendeesKeepAlive, 5000);
       }
     }
 
-     transactionsWS.onopen = () => {
-       console.log('Connected to Transactions topic Websocket...');
-       transactionsKeepAlive();
+     attendeesWS.onopen = () => {
+       console.log('Connected to attendees topic Websocket...');
+       attendeesKeepAlive();
      };
 
-     transactionsWS.onmessage = (message) => {
+     attendeesWS.onmessage = (message) => {
        try {
-         console.log("New Transaction...");
+         console.log("New attendees...");
          console.log("DATA:")
          console.log(message.data)
          
@@ -87,33 +68,32 @@ class Transactions extends React.Component {
          var payload = JSON.parse(data.payload);
          console.log(payload);
 
-         var transaction = {
+         var attendee = {
            id: key,
            key: key,
-           email : payload.EMAIL_ADDRESS,
-           card: payload.CARD_NUMBER,
-           timestamp: payload.TIMESTAMP
+           firstname : payload.firstname,
+           lastname: payload.lastname,
+           company: payload.company
          }
 
          this.setState(state => {
-          const list = [transaction, ...state.transactions ];
+          const list = [attendee, ...state.attendees ];
           
           return {
-            transactions: list,
+            attendees: list,
           };
         });
 
-         
        } catch (error) {
          console.log("Error while parsing message from websocket");
          console.log(error);
        }
      };
-     transactionsWS.onerror = (error) => {
+     attendeesWS.onerror = (error) => {
        console.log(error);
        console.log("Error while connecting to the websocket: " + error.message + " " + error.name);
      }
-     transactionsWS.onclose = (event) => {
+     attendeesWS.onclose = (event) => {
        console.log("Websocket closed: " + event.reason);
      }
    }
@@ -121,7 +101,7 @@ class Transactions extends React.Component {
   constructor() {
     super();
     this.state = {
-        transactions: [
+        attendees: [
         ]
     }
   }
@@ -131,7 +111,7 @@ class Transactions extends React.Component {
     return (
       <Box
         sx={{
-          height: 300,
+          height: 370,
           width: 1,
           '& .super-app-theme--header': {
            backgroundColor: 'rgba(18, 20, 204, 0.75)',
@@ -140,11 +120,11 @@ class Transactions extends React.Component {
           },
         }}
       >
-      <div style={{ height: 400, width: '100%' }}>
+      <div style={{ height: '100%' }}>
         <div style={{ display: 'flex', height: '100%' }}>
           <div style={{ flexGrow: 1 }}>
           <DataGrid 
-            rows={this.state.transactions} 
+            rows={this.state.attendees} 
             columns={this.columns}  
             components={{
               NoRowsOverlay: CustomNoRowsOverlay,
@@ -158,4 +138,4 @@ class Transactions extends React.Component {
   
 }
 
-export default Transactions;
+export default Attendees;
