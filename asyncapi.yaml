@@ -1,0 +1,41 @@
+asyncapi: '2.1.0'
+info:
+  title: Kafka Test
+  version: 1.0.0
+  description: Example of how to expose Kafka topics via WebScoket and REST API using Gravitee.io Kafka Connector.
+servers:
+  production:
+    url: "dorian-dev-demo-apim-gateway.cloud.gravitee.io/test-kafka"
+    protocol: ws
+    description: Demo attendees broker.
+    security:
+      - apiKey: []
+channels:
+  attendees:
+    subscribe:
+      message:
+        $ref: '#/components/messages/attendees'
+components:
+  messages:
+    attendees:
+      payload:
+        type: object
+        properties:
+          firstname:
+            type: string
+            description: The attendee's firstname
+            example: Dorian
+          lastname:
+            type: string
+            format: email
+            description: The attendee's lastname
+            example: Blanc
+          company:
+            type: string
+            description: The attendee's company
+            example: Gravitee.io
+  securitySchemes:
+    apiKey:
+      type: httpApiKey      
+      in: query
+      name: "api-key"

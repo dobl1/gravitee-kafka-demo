@@ -4,7 +4,7 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 
-const attendeesWS = new W3CWebSocket('wss://dorian-dev-demo-apim-gateway.cloud.gravitee.io/test-kafka/users');
+const attendeesWS = new W3CWebSocket('wss://dorian-dev-demo-apim-gateway.cloud.gravitee.io/test-kafka/users?api-key=7f5ea948-07b7-4efd-af5d-150b84c5048d');
 
 const StyledGridOverlay = styled(GridOverlay)(({ theme }) => ({
   flexDirection: 'column',

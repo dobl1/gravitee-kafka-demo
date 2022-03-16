@@ -44,7 +44,7 @@ class AttendeeForm extends React.Component {
             }
             var bodyStr = JSON.stringify(body);
 
-            fetch("https://dorian-dev-demo-apim-gateway.cloud.gravitee.io/test-kafka/users", {
+            fetch("https://dorian-dev-demo-apim-gateway.cloud.gravitee.io/test-kafka/users?api-key=7f5ea948-07b7-4efd-af5d-150b84c5048d", {
                 method: "POST",
                 mode: "no-cors",
                 body: bodyStr,

@@ -1,82 +1,77 @@
 {
-  "name": "Credit Card Anomalies Detection",
+  "name": "Kafka Demo API",
+  "crossId": "0d069f56-c9a9-4979-869f-56c9a9f979a5",
   "version": "1.0.0",
-  "description": "Test kafka connector",
-  "visibility": "PRIVATE",
+  "description": "Apidays Helsinki & North 2022",
+  "visibility": "PUBLIC",
   "gravitee": "2.0.0",
   "flow_mode": "DEFAULT",
   "resources": [],
   "properties": [],
-  "labels": [
-    "ciccio"
-  ],
   "members": [
-    {
-      "source": "cockpit",
-      "sourceId": "63aa9dfe-b2ac-4db6-aa9d-feb2ac6db69a",
-      "roles": [
-        "6a510b2c-c152-4fbc-910b-2cc1521fbc08"
-      ]
-    },
     {
       "source": "memory",
       "sourceId": "admin",
       "roles": [
-        "292bc14f-45ec-441c-abc1-4f45ec341c30"
+        "e724aede-121c-43c2-a4ae-de121cc3c261"
       ]
     }
   ],
   "pages": [
     {
-      "id": "fbc1c2ed-dcf2-4318-81c2-eddcf283183a",
+      "id": "b27f7a70-2de6-44dc-bf7a-702de6a4dc8b",
+      "crossId": "82726ece-28c7-4557-b26e-ce28c76557b3",
       "name": "Aside",
       "type": "SYSTEM_FOLDER",
       "order": 0,
       "published": true,
       "visibility": "PUBLIC",
-      "lastModificationDate": 1638747115968,
+      "lastModificationDate": 1647395783737,
       "contentType": "application/json",
       "homepage": false,
       "parentPath": "",
       "excludedAccessControls": false,
       "accessControls": [],
-      "api": "615b1ad4-3efb-4a96-9b1a-d43efb0a965f"
+      "api": "73899ac6-acb0-4b87-899a-c6acb0fb87e3",
+      "attached_media": []
     },
     {
-      "id": "a7c1731b-2d4e-41f9-8173-1b2d4ef1f93e",
-      "name": "asyncapi.yaml",
+      "id": "14ec2408-c38e-4c45-ac24-08c38e2c4586",
+      "crossId": "082ab928-d35a-4288-aab9-28d35a62888f",
+      "name": "Technical Documentation",
       "type": "ASYNCAPI",
-      "content": "asyncapi: '2.1.0'\ninfo:\n  title: Kafka Test\n  version: 1.0.0\n  description: Example of how to expose Kafka topics via rest\nservers:\n  production:\n    url: \"nico.gravitee.io/apim/gateway-dev/ws/kafka\"\n    protocol: ws\n    description: This is \"Nico's\" broker.\n    security:\n      - apiKey: []\nchannels:\n  transactions:\n    subscribe:\n      message:\n        $ref: '#/components/messages/transaction'\n  anomalies:\n    subscribe:\n      message:\n        $ref: '#/components/messages/anomaly'\ncomponents:\n  messages:\n    transaction:\n      payload:\n        type: object\n        properties:\n          CARD_NUMBER:\n            type: number\n            description: The customer's credit card number\n            example: 234332424\n          EMAIL_ADDRESS:\n            type: string\n            format: email\n            description: Email of the user\n            example: nico.balestra@graviteesource.com\n          TIMESTAMP:\n            type: string\n            description: Timestamp when the transaction happened\n            example: 2022-01-21T12:30.00\n          AMOUNT:\n            type: number\n            description: Transaction's amount\n            example: 100.00\n    anomaly:\n      payload:\n        type: object\n        properties:\n          card_number:\n            type: number\n            description: The customer's credit card number\n          email_adddress:\n            type: string\n            format: email\n            description: Email of the user\n          n_attempts:\n            type: number\n            description: Number of attempts to use the card which caused the anomaly to be detected\n          total_amount:\n            type: number\n            description: Total amount involved in the fraud\n          t_ids:\n            type: array\n            description: List of Transaction IDs that caused the anomaly\n  securitySchemes:\n    apiKey:\n      type: httpApiKey      \n      in: query\n      name: \"api-key\"\n        \n\n\n",
+      "content": "asyncapi: '2.1.0'\ninfo:\n  title: Kafka Test\n  version: 1.0.0\n  description: Example of how to expose Kafka topics via WebScoket and REST API using Gravitee.io Kafka Connector.\nservers:\n  production:\n    url: \"dorian-dev-demo-apim-gateway.cloud.gravitee.io/test-kafka\"\n    protocol: ws\n    description: Demo attendees broker.\n    security:\n      - apiKey: []\nchannels:\n  attendees:\n    subscribe:\n      message:\n        $ref: '#/components/messages/attendees'\ncomponents:\n  messages:\n    attendees:\n      payload:\n        type: object\n        properties:\n          firstname:\n            type: string\n            description: The attendee's firstname\n            example: Dorian\n          lastname:\n            type: string\n            format: email\n            description: The attendee's lastname\n            example: Blanc\n          company:\n            type: string\n            description: The attendee's company\n            example: Gravitee.io\n  securitySchemes:\n    apiKey:\n      type: httpApiKey      \n      in: query\n      name: \"api-key\"",
       "order": 1,
-      "lastContributor": "508d570e-e5da-4b22-8d57-0ee5da4b220f",
+      "lastContributor": "75097ffb-48a6-4ae9-897f-fb48a62ae93b",
       "published": true,
       "visibility": "PUBLIC",
-      "lastModificationDate": 1642512176541,
+      "lastModificationDate": 1647395783897,
       "contentType": "text/yaml",
-      "homepage": true,
+      "homepage": false,
       "parentPath": "",
       "excludedAccessControls": false,
       "accessControls": [],
-      "api": "615b1ad4-3efb-4a96-9b1a-d43efb0a965f",
+      "api": "73899ac6-acb0-4b87-899a-c6acb0fb87e3",
       "attached_media": []
     }
   ],
   "plans": [
     {
-      "id": "00602840-6ea0-4acc-a028-406ea04acc86",
-      "name": "API Key plan",
-      "description": "API Key Plan",
+      "id": "cf2e0282-204c-4e9e-ae02-82204c1e9e0c",
+      "crossId": "234c8207-afb5-408f-8c82-07afb5008f7b",
+      "name": "API Key",
+      "description": "Plan protected by an API Key",
       "validation": "MANUAL",
       "security": "API_KEY",
-      "securityDefinition": "{\"propagateApiKey\":true}",
+      "securityDefinition": "{}",
       "type": "API",
       "status": "PUBLISHED",
-      "api": "615b1ad4-3efb-4a96-9b1a-d43efb0a965f",
+      "api": "73899ac6-acb0-4b87-899a-c6acb0fb87e3",
       "order": 1,
       "characteristics": [],
-      "created_at": 1639135848583,
-      "updated_at": 1639135852520,
-      "published_at": 1639135852520,
+      "created_at": 1647395386347,
+      "updated_at": 1647395783148,
+      "published_at": 1647395392957,
       "paths": {},
       "flows": [
         {
@@ -98,29 +93,42 @@
   ],
   "metadata": [
     {
+      "key": "product-ref",
+      "name": "Product Ref",
+      "format": "STRING",
+      "defaultValue": "XXXXX",
+      "apiId": "73899ac6-acb0-4b87-899a-c6acb0fb87e3"
+    },
+    {
       "key": "email-support",
       "name": "email-support",
       "format": "MAIL",
       "value": "${(api.primaryOwner.email)!''}",
       "defaultValue": "support@change.me",
-      "apiId": "615b1ad4-3efb-4a96-9b1a-d43efb0a965f"
+      "apiId": "73899ac6-acb0-4b87-899a-c6acb0fb87e3"
     }
   ],
-  "id": "615b1ad4-3efb-4a96-9b1a-d43efb0a965f",
+  "id": "73899ac6-acb0-4b87-899a-c6acb0fb87e3",
   "path_mappings": [],
   "proxy": {
     "virtual_hosts": [
       {
-        "path": "/kafka"
+        "path": "/test-kafka/"
       }
     ],
     "strip_context_path": false,
     "preserve_host": false,
+    "logging": {
+      "mode": "CLIENT_PROXY",
+      "content": "HEADERS_PAYLOADS",
+      "scope": "REQUEST_RESPONSE"
+    },
     "groups": [
       {
         "name": "default-group",
         "endpoints": [
           {
+            "tenants": [],
             "backup": false,
             "common": {
               "clientDnsLookup": "USE_ALL_DNS_IPS"
@@ -179,10 +187,10 @@
               "autoCommitIntervalMs": 5000,
               "sessionTimeoutMs": 10000,
               "sendBufferBytes": 131072,
-              "defaultApiTimeoutMs": 60000,
+              "defaultApiTimeoutMs": 3600000,
               "heartbeatIntervalMs": 3000,
               "checkCRCS": true,
-              "connectionsMaxIdleMs": 1000000,
+              "connectionsMaxIdleMs": 540000,
               "metricsNumSamples": 2,
               "clientId": "",
               "autoOffsetReset": "latest",
@@ -196,7 +204,7 @@
               "keyDeserializer": "org.apache.kafka.common.serialization.StringDeserializer",
               "partitionAssignmentStrategy": "org.apache.kafka.clients.consumer.RangeAssignor"
             },
-            "target": "kafka:9092"
+            "target": "demo-gravitee.dobl.fr:9094"
           }
         ],
         "load_balancing": {
@@ -217,9 +225,9 @@
   },
   "response_templates": {},
   "primaryOwner": {
-    "id": "1921563f-0fc4-4260-a156-3f0fc48260a0",
-    "email": "team-cockpit+apo@graviteesource.com",
-    "displayName": "John APO",
+    "id": "75097ffb-48a6-4ae9-897f-fb48a62ae93b",
+    "email": "dorian.blanc@graviteesource.com",
+    "displayName": "Dorian Blanc",
     "type": "USER"
   }
 }
